@@ -50,32 +50,32 @@ def main():
         if isfile(filename):# 如果已經有檔案，就讀出最後一行然後插入在後面
             print stock_index, 'exist!'
 
-            lastline = get_last_row(filename)
-            try:
-                st = Share(stock_index+'.tw')
-                infos = st.get_info()
-                data = st.get_historical('2015-01-01', infos['end'])
+            # lastline = get_last_row(filename)
+            # try:
+            #     st = Share(stock_index+'.tw')
+            #     infos = st.get_info()
+            #     data = st.get_historical('2015-01-01', infos['end'])
                 
-                fo = open(filename, 'ab')
-                cw = csv.writer(fo, delimiter=',')
+            #     fo = open(filename, 'ab')
+            #     cw = csv.writer(fo, delimiter=',')
 
-                startFlag = False
-                for i in xrange(len(data)):
-                    datum = data[-(i+1)]
-                    if not startFlag:
-                        if datum['Date'] == lastline[0]:
-                            startFlag = True
-                            count = 0
-                    else:
-                        count += 1
-                        cw.writerow([datum['Date'], datum['Open'], datum['High'], datum['Low'],
-                                     datum['Close'], datum['Volume'], datum['Adj_Close']])                    
+            #     startFlag = False
+            #     for i in xrange(len(data)):
+            #         datum = data[-(i+1)]
+            #         if not startFlag:
+            #             if datum['Date'] == lastline[0]:
+            #                 startFlag = True
+            #                 count = 0
+            #         else:
+            #             count += 1
+            #             cw.writerow([datum['Date'], datum['Open'], datum['High'], datum['Low'],
+            #                          datum['Close'], datum['Volume'], datum['Adj_Close']])                    
 
-                print "差了 "+str(count)+" 筆資料"
+            #     print "差了 "+str(count)+" 筆資料"
 
-            except:
-                print stock_index, "error!"
-                error_log_file.write('%d' % (stock_index))
+            # except:
+            #     print stock_index, "error!"
+            #     error_log_file.write('%d' % (stock_index))
 
         else: # 如果沒有檔案，就從頭開始抓
             print stock_index, ' not exist!'
