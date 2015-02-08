@@ -24,6 +24,7 @@ def get_last_row(csv_filename):
 def main():
 
     PATH_OF_DATA = 'data'
+    error_log_file = open('error.log', 'a')
 
     index_lists = []
 
@@ -50,46 +51,50 @@ def main():
             print stock_index, 'exist!'
 
             lastline = get_last_row(filename)
-            # try:
-            st = Share(stock_index+'.tw')
-            infos = st.get_info()
-            data = st.get_historical('2015-01-01', infos['end'])
-            
-            fo = open(filename, 'ab')
-            cw = csv.writer(fo, delimiter=',')
+            try:
+                st = Share(stock_index+'.tw')
+                infos = st.get_info()
+                data = st.get_historical('2015-01-01', infos['end'])
+                
+                fo = open(filename, 'ab')
+                cw = csv.writer(fo, delimiter=',')
 
-            startFlag = False
-            for datum in data:
-                if not startFlag:
-                    if datum['Date'] == lastline[0]:
-                        startFlag = True
-                        count = 0
-                else:
-                    count += 1
-                    cw.writerow([datum['Date'], datum['Open'], datum['High'], datum['Low'],
-                                 datum['Close'], datum['Volume'], datum['Adj_Close']])                    
+                startFlag = False
+                for i in xrange(len(data)):
+                    datum = data[-(i+1)]
+                    if not startFlag:
+                        if datum['Date'] == lastline[0]:
+                            startFlag = True
+                            count = 0
+                    else:
+                        count += 1
+                        cw.writerow([datum['Date'], datum['Open'], datum['High'], datum['Low'],
+                                     datum['Close'], datum['Volume'], datum['Adj_Close']])                    
 
-            print "差了 "+str(count)+" 筆資料"
+                print "差了 "+str(count)+" 筆資料"
 
-            # except:
-                # print stock_index, "error!"
+            except:
+                print stock_index, "error!"
+                error_log_file.write('%d' % (stock_index))
 
         else: # 如果沒有檔案，就從頭開始抓
             print stock_index, ' not exist!'
             
-            # try:
-            st = Share(stock_index+'.tw')
-            infos = st.get_info()
-            data = st.get_historical(infos["start"], infos["end"])
-            
-            fo = open(join(PATH_OF_DATA, stock_index+'.csv'), 'wb')
-            cw = csv.writer(fo, delimiter=',')
-            for i in xrange(len(data)):
-                cw.writerow([data[-(i+1)]['Date'], data[-(i+1)]['Open'], data[-(i+1)]['High'],
-                            data[-(i+1)]['Low'], data[-(i+1)]['Close'], data[-(i+1)]['Volume'],
-                            data[-(i+1)]['Adj_Close']])
-            # except:
-                # print stock_index, "error!"
+            try:
+                st = Share(stock_index+'.tw')
+                infos = st.get_info()
+                data = st.get_historical(infos["start"], infos["end"])
+                
+                fo = open(join(PATH_OF_DATA, stock_index+'.csv'), 'wb')
+                cw = csv.writer(fo, delimiter=',')
+                for i in xrange(len(data)):
+                    cw.writerow([data[-(i+1)]['Date'], data[-(i+1)]['Open'], data[-(i+1)]['High'],
+                                data[-(i+1)]['Low'], data[-(i+1)]['Close'], data[-(i+1)]['Volume'],
+                                data[-(i+1)]['Adj_Close']])
+            except:
+                print stock_index, "error!"
+                error_log_file.write('%d' % (stock_index))
+
 
 if __name__ == '__main__':
     main()    
