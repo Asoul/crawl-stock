@@ -93,7 +93,7 @@ def main():
                                 data[-(i+1)]['Adj_Close']])
             except:
                 print stock_index, "error!"
-                error_log_file.write('%d' % (stock_index))
+                error_log_file.write('%s' % (stock_index))
 
 
 if __name__ == '__main__':
