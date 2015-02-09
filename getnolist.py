@@ -15,12 +15,6 @@ import csv
 import sys
 from os.path import join, isfile
 
-def get_last_row(csv_filename):
-    with open(csv_filename,'rb') as f:
-        for line in csv.reader(f):
-            lastline = line
-        return lastline
-
 def main():
 
     PATH_OF_DATA = 'data'
