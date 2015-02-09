@@ -15,6 +15,12 @@ import csv
 import sys
 from os.path import join, isfile
 
+
+# TODO: 先假設要補齊的資料從 2015 開始抓吧
+FROM_DATE = '2015-01-01'
+# TODO: 先堪用到 2016 年吧！
+LAST_DATE = '2016-01-01'
+
 def get_last_row(csv_filename):
     with open(csv_filename,'rb') as f:
         for line in csv.reader(f):
@@ -50,49 +56,71 @@ def main():
         if isfile(filename):# 如果已經有檔案，就讀出最後一行然後插入在後面
             print stock_index, 'exist!'
 
-            # lastline = get_last_row(filename)
-            # try:
-            #     st = Share(stock_index+'.tw')
-            #     infos = st.get_info()
-            #     data = st.get_historical('2015-01-01', infos['end'])
+            lastline = get_last_row(filename)
+            print 'lastline = ', lastline
+            try:
+                st = Share(stock_index+'.tw')
                 
-            #     fo = open(filename, 'ab')
-            #     cw = csv.writer(fo, delimiter=',')
+                if lastline[0] != st.get_trade_datetime()[:10]:#如果需要更新的話
+                    
+                    fo = open(filename, 'ab')
+                    cw = csv.writer(fo, delimiter=',')
 
-            #     startFlag = False
-            #     for i in xrange(len(data)):
-            #         datum = data[-(i+1)]
-            #         if not startFlag:
-            #             if datum['Date'] == lastline[0]:
-            #                 startFlag = True
-            #                 count = 0
-            #         else:
-            #             count += 1
-            #             cw.writerow([datum['Date'], datum['Open'], datum['High'], datum['Low'],
-            #                          datum['Close'], datum['Volume'], datum['Adj_Close']])                    
+                    # 先假設每天抓，好像historical有錯
 
-            #     print "差了 "+str(count)+" 筆資料"
+                    # data = st.get_historical(FROM_DATE, LAST_DATE)# 先堪用到年底
 
-            # except:
-            #     print stock_index, "error!"
-            #     error_log_file.write('%d' % (stock_index))
+
+                    # # 先更新歷史資料
+                    # startDate = lastline[0]
+                    # startFlag = False
+                    # for i in xrange(len(data)):
+                    #     datum = data[-(i+1)]
+                    #     if datum['Date'] == lastline[0]:
+                    #         startFlag = True
+                    #         continue
+                    #     if startFlag:
+                    #         startFlag = False
+                    #     else:
+                    #         continue
+                    #     # 先不抓 adj close 吧！
+                    #     cw.writerow([datum['Date'], datum['Open'], datum['High'], datum['Low'], 
+                    #                      datum['Close'], datum['Volume'], datum['Adj_Close']])
+
+                    # 再更新當天資料
+                    cw.writerow([st.get_trade_datetime()[:10], st.get_open(), st.get_days_high(),
+                                     st.get_days_low(), st.get_price(), st.get_volume(), '0.0'])
+
+            except:
+                print stock_index, "update error!"
+                error_log_file.write('%s' % (stock_index))
 
         else: # 如果沒有檔案，就從頭開始抓
             print stock_index, ' not exist!'
             
             try:
                 st = Share(stock_index+'.tw')
-                data = st.get_historical('2000-01-01', '2100-01-01')
-                
+                data = st.get_historical('2000-01-01', LAST_DATE)
+            except:
+                print stock_index, "create error!"
+                error_log_file.write('%s, CreateError\n' % (stock_index))
+                continue
+
+            try:
                 fo = open(join(PATH_OF_DATA, stock_index+'.csv'), 'wb')
                 cw = csv.writer(fo, delimiter=',')
                 for i in xrange(len(data)):
-                    cw.writerow([data[-(i+1)]['Date'], data[-(i+1)]['Open'], data[-(i+1)]['High'],
-                                data[-(i+1)]['Low'], data[-(i+1)]['Close'], data[-(i+1)]['Volume'],
-                                data[-(i+1)]['Adj_Close']])
+                    datum = data[-(i+1)]
+                    if type(datum) == str:
+                        print filename, i, "is string"
+                    else:
+                        cw.writerow([datum['Date'], datum['Open'], datum['High'], datum['Low'], 
+                                     datum['Close'], datum['Volume'], datum['Adj_Close']])
             except:
-                print stock_index, "error!"
-                error_log_file.write('%s\n' % (stock_index))
+                print stock_index, "output error!"
+                error_log_file.write('%s, OutputError\n' % (stock_index))
+                continue            
+
 
 
 if __name__ == '__main__':

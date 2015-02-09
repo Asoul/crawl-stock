@@ -1,0 +1,6 @@
+1. Date
+2. Open
+3. High
+4. Low Close
+5. Volume
+6. Adj Close*
