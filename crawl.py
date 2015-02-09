@@ -82,7 +82,7 @@ def main():
             
             try:
                 st = Share(stock_index+'.tw')
-                data = st.get_historical('2000-01-01', infos["end"])
+                data = st.get_historical('2000-01-01', '2100-01-01')
                 
                 fo = open(join(PATH_OF_DATA, stock_index+'.csv'), 'wb')
                 cw = csv.writer(fo, delimiter=',')

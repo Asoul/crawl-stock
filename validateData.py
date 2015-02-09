@@ -51,33 +51,62 @@ def main():
             # os.remove(join(DATA_PATH, filename))
 
     # 看有沒有跳月跳年的
-    print "Validate missing month and year..."
-    startFlag = True if len(sys.argv) > 1 else False
-    for filename in file_list:
-        if startFlag:
-            if filename == (sys.argv[1]+'.csv'):
-                startFlag = False
-            else:
-                continue
-        fin = open(join(DATA_PATH, filename), 'rb')
-        firstFlag = True
-        for row in csv.reader(fin, delimiter=","):
-            if firstFlag:
-                year = int(row[0].split('-')[0])
-                month = int(row[0].split('-')[1])
-                firstFlag = False
-                continue
+    # print "Validate missing month and year..."
+    # startFlag = True if len(sys.argv) > 1 else False
+    # for filename in file_list:
+    #     if startFlag:
+    #         if filename == (sys.argv[1]+'.csv'):
+    #             startFlag = False
+    #         else:
+    #             continue
+    #     fin = open(join(DATA_PATH, filename), 'rb')
+    #     firstFlag = True
+    #     for row in csv.reader(fin, delimiter=","):
+    #         if firstFlag:
+    #             year = int(row[0].split('-')[0])
+    #             month = int(row[0].split('-')[1])
+    #             firstFlag = False
+    #             continue
 
-            newyear = int(row[0].split('-')[0])
-            newmonth = int(row[0].split('-')[1])
+    #         newyear = int(row[0].split('-')[0])
+    #         newmonth = int(row[0].split('-')[1])
 
-            if newyear > year + 1:
-                print "[YEAR]", filename, row
-            if newyear == year and newmonth > month + 1:
-                print "[MONTH]", filename, row
+    #         if newyear > year + 1:
+    #             print "[YEAR]", filename, row
+    #         if newyear == year and newmonth > month + 1:
+    #             print "[MONTH]", filename, row
 
-            year = newyear
-            month = newmonth
+    #         year = newyear
+    #         month = newmonth
+
+    # 看有沒有差超過 7% 的
+    # print "Validate missing month and year..."
+    # startFlag = True if len(sys.argv) > 1 else False
+    # for filename in file_list:
+    #     if startFlag:
+    #         if filename == (sys.argv[1]+'.csv'):
+    #             startFlag = False
+    #         else:
+    #             continue
+    #     fin = open(join(DATA_PATH, filename), 'rb')
+    #     firstFlag = True
+    #     for row in csv.reader(fin, delimiter=","):
+    #         if firstFlag:
+    #             year = int(row[0].split('-')[0])
+    #             month = int(row[0].split('-')[1])
+    #             firstFlag = False
+    #             continue
+
+    #         newyear = int(row[0].split('-')[0])
+    #         newmonth = int(row[0].split('-')[1])
+
+    #         if newyear > year + 1:
+    #             print "[YEAR]", filename, row
+    #         if newyear == year and newmonth > month + 1:
+    #             print "[MONTH]", filename, row
+
+    #         year = newyear
+    #         month = newmonth
             
 if __name__ == '__main__':
     main()    
