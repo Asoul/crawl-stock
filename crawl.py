@@ -82,8 +82,7 @@ def main():
             
             try:
                 st = Share(stock_index+'.tw')
-                infos = st.get_info()
-                data = st.get_historical(infos["start"], infos["end"])
+                data = st.get_historical('2000-01-01', infos["end"])
                 
                 fo = open(join(PATH_OF_DATA, stock_index+'.csv'), 'wb')
                 cw = csv.writer(fo, delimiter=',')
@@ -93,7 +92,7 @@ def main():
                                 data[-(i+1)]['Adj_Close']])
             except:
                 print stock_index, "error!"
-                error_log_file.write('%s' % (stock_index))
+                error_log_file.write('%s\n' % (stock_index))
 
 
 if __name__ == '__main__':
