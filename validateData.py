@@ -12,6 +12,16 @@ def main():
     DATA_PATH = 'data'
     file_list = [ f for f in listdir(DATA_PATH) if f[-4:] == '.csv' ]
 
+    # 看有沒有內容
+    # print "Validate have contents"
+    # for filename in file_list:
+    #     fin = open(join(DATA_PATH, filename), 'rb')
+    #     count = 0
+    #     for row in csv.reader(fin, delimiter=","):
+    #         count += 1
+    #     if count == 0:
+    #         print filename, " no data"
+
     # # 看每一個檔案中有沒有重複的天數
     # print "Validate conflict data..."
     # for filename in file_list:
@@ -42,12 +52,12 @@ def main():
     #             cw.writerow(row)
 
     # 把現在不能買的刪掉
-    # for filename in file_list:
-    #     fin = open(join(DATA_PATH, filename), 'rb')
-    #     for row in csv.reader(fin, delimiter=","):
-    #         last = row
-    #     if last[0] != '2015-02-06':
-    #         print '[Not today]', filename
+    for filename in file_list:
+        fin = open(join(DATA_PATH, filename), 'rb')
+        for row in csv.reader(fin, delimiter=","):
+            last = row
+        if last[0] != '2015-02-06':
+            print '[Not today]', filename
             # os.remove(join(DATA_PATH, filename))
 
     # 看有沒有跳月跳年的
