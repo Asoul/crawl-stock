@@ -21,6 +21,16 @@ FROM_DATE = '2015-01-01'
 # TODO: 先堪用到 2016 年吧！
 LAST_DATE = '2016-01-01'
 
+def time_before(timea, timeb):
+    if int(timea[:4]) > int(timeb[:4]):
+        return True
+    elif int(timea[5:7]) > int(timeb[5:7]):
+        return True
+    elif int(timea[8:10]) > int(timeb[8:10]):
+        return True
+    else:
+        return False
+
 def get_last_row(csv_filename):
     with open(csv_filename,'rb') as f:
         for line in csv.reader(f):
@@ -35,10 +45,7 @@ def main():
     index_lists = []
 
     ### 從 stocknumber 中讀出看要抓哪幾隻股票的資料
-    f = open('stocknumber.csv', 'rb')
-    cr = csv.reader(f, delimiter=',')
-    for row in cr:
-        index_lists.append(row[0])
+    index_lists = [ f[:-4] for f in listdir(PATH_OF_DATA) if f[-4:] == '.csv' ]
 
     skipFlag = True if len(sys.argv) > 1 else False
     tillFlag = True if len(sys.argv) > 2 else False
