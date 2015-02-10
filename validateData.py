@@ -99,6 +99,34 @@ def main():
     #         year = newyear
     #         month = newmonth
 
+    # 看有沒有顛倒日期
+    # print "Validate misordered month and year..."
+    # for filename in file_list:
+    #     fin = open(join(DATA_PATH, filename), 'rb')
+    #     firstFlag = True
+    #     for row in csv.reader(fin, delimiter=","):
+    #         if firstFlag:
+    #             year = int(row[0].split('-')[0])
+    #             month = int(row[0].split('-')[1])
+    #             day = int(row[0].split('-')[2])
+    #             firstFlag = False
+    #             continue
+
+    #         newyear = int(row[0].split('-')[0])
+    #         newmonth = int(row[0].split('-')[1])
+    #         newday = int(row[0].split('-')[2])
+
+    #         if newyear < year:
+    #             print "[YEAR]", filename, row
+    #         elif newyear == year and newmonth < month:
+    #             print "[MONTH]", filename, row
+    #         elif newyear == year and newmonth == month and newday < day:
+    #             print "[DAY]", filename, row
+
+    #         year = newyear
+    #         month = newmonth
+    #         day = newday
+
     # 看有沒有差超過 7% 的
     # print "Validate missing month and year..."
     # startFlag = True if len(sys.argv) > 1 else False
