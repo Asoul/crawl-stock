@@ -104,8 +104,6 @@ def main():
                 else:
                     print "不需要更新"
 
-                break
-
             except:
                 print stock_index, "update error!"
                 error_log_file.write('%s, Update Error\n' % (stock_index))
