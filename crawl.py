@@ -108,7 +108,7 @@ def main():
 
             except:
                 print stock_index, "update error!"
-                error_log_file.write('%s' % (stock_index))
+                error_log_file.write('%s, Update Error\n' % (stock_index))
 
         else: # 如果沒有檔案，就從頭開始抓
             print stock_index, ' not exist!'
