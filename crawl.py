@@ -14,6 +14,7 @@ from yahoo_finance import Share
 import csv
 import sys
 from os.path import join, isfile
+from os import listdir
 
 
 # TODO: 先假設要補齊的資料從 2015 開始抓吧
@@ -21,12 +22,14 @@ FROM_DATE = '2015-01-01'
 # TODO: 先堪用到 2016 年吧！
 LAST_DATE = '2016-01-01'
 
-def time_before(timea, timeb):
+def time_after(timea, timeb):
     if int(timea[:4]) > int(timeb[:4]):
         return True
     elif int(timea[5:7]) > int(timeb[5:7]):
         return True
     elif int(timea[8:10]) > int(timeb[8:10]):
+        return True
+    elif int(timea[8:10]) == int(timeb[8:10]):
         return True
     else:
         return False
@@ -68,8 +71,8 @@ def main():
             try:
                 st = Share(stock_index+'.tw')
                 
-                if lastline[0] != st.get_trade_datetime()[:10]:#如果需要更新的話
-                    
+                if not time_after(lastline[0], st.get_trade_datetime()[:10]):
+                    print 'time : ', st.get_trade_datetime()[:10]
                     fo = open(filename, 'ab')
                     cw = csv.writer(fo, delimiter=',')
 
@@ -97,6 +100,11 @@ def main():
                     # 再更新當天資料
                     cw.writerow([st.get_trade_datetime()[:10], st.get_open(), st.get_days_high(),
                                      st.get_days_low(), st.get_price(), st.get_volume(), '0.0'])
+                    print "更新一筆！"
+                else:
+                    print "不需要更新"
+
+                break
 
             except:
                 print stock_index, "update error!"

@@ -14,24 +14,34 @@ def main():
 
     # 看有沒有內容
     # print "Validate have contents"
-    for filename in file_list:
-        fin = open(join(DATA_PATH, filename), 'rb')
-        count = 0
-        for row in csv.reader(fin, delimiter=","):
-            count += 1
-        if count == 0:
-            print filename, " no data"
+    # for filename in file_list:
+    #     fin = open(join(DATA_PATH, filename), 'rb')
+    #     count = 0
+    #     for row in csv.reader(fin, delimiter=","):
+    #         count += 1
+    #     if count == 0:
+    #         print filename, " no data"
 
-    # # 看每一個檔案中有沒有重複的天數
+    # # 看每一個檔案中有沒有重複的天數，有的話就先留下第一個
     # print "Validate conflict data..."
     # for filename in file_list:
     #     fin = open(join(DATA_PATH, filename), 'rb')
     #     dates = set()
+    #     errorFlag = False
+    #     rows = []
     #     for row in csv.reader(fin, delimiter=","):
     #         if row[0] in dates:
-    #             print '[CONFLICT]', filename, row
+    #             errorFlag = True
     #         else:
     #             dates.add(row[0])
+    #             rows.append(row)
+
+    #     if errorFlag:
+    #         print '[CONFLICT]', filename
+    #         fout = open(join(DATA_PATH, filename), 'wb')
+    #         cw = csv.writer(fout, delimiter=',')
+    #         for row in rows:
+    #             cw.writerow(row)
 
     # 看檔案中有沒有奇怪的資料（一行不是 7 段的），就移除掉
     # print "Validate strange data then rewrite all data again"
