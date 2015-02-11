@@ -1,6 +1,6 @@
 #!/bin/bash
-while :
-do
-    python crawl.py
-    sleep 5000
-done
+
+python crawl.py
+git add .
+git commit -m "daily update"
+git push
