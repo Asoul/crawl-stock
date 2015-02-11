@@ -23,11 +23,11 @@ FROM_DATE = '2015-01-01'
 # TODO: 先堪用到 2016 年吧！
 LAST_DATE = '2016-01-01'
 
-def date_sub(timestr):
-    year = int(timestr[:4])
-    month = int(timestr[5:7])
-    day = int(timestr[8:10])
-    return (date(year, month, day) - timedelta(days=1)).strftime('%Y-%m-%d')
+# def date_sub(timestr):
+#     year = int(timestr[:4])
+#     month = int(timestr[5:7])
+#     day = int(timestr[8:10])
+#     return (date(year, month, day) - timedelta(days=1)).strftime('%Y-%m-%d')
 
 def time_after(timea, timeb):
     if int(timea[:4]) > int(timeb[:4]):
@@ -75,7 +75,7 @@ def main():
             print 'lastline = ', lastline
             try:
                 st = Share(stock_index+'.tw')
-                exact_time = date_sub(st.get_trade_datetime())
+                exact_time = st.get_trade_datetime()
 
                 if not time_after(lastline[0], exact_time):
                     print 'time : ', exact_time
