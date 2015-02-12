@@ -75,7 +75,7 @@ def main():
             print 'lastline = ', lastline
             try:
                 st = Share(stock_index+'.tw')
-                exact_time = st.get_trade_datetime()
+                exact_time = st.get_trade_datetime()[:10]
 
                 if not time_after(lastline[0], exact_time):
                     print 'time : ', exact_time
