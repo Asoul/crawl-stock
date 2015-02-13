@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /root/crawl-stock/
-python crawl.py
-git add .
-git commit -m "daily update"
-git push
+/usr/bin/python crawl.py
+/usr/bin/git add .
+/usr/bin/git commit -m "daily update"
+/usr/bin/git push
